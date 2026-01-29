@@ -1,8 +1,10 @@
-# Eコマース店舗 サンプルデータセット
+# README
+
+## Eコマース店舗 サンプルデータセット
 
 text-to-SQLの学習用に作成したEコマース店舗のサンプルデータセットです。
 
-## データセット概要
+### データセット概要
 
 - **顧客（customers）**: 20件
 - **商品（products）**: 20件
@@ -11,9 +13,9 @@ text-to-SQLの学習用に作成したEコマース店舗のサンプルデー�
 
 合計データサイズ: 約10-20KB（BigQuery無料枠の10GBストレージに十分収まります）
 
-## テーブル構成
+### テーブル構成
 
-### customers（顧客テーブル）
+#### customers（顧客テーブル）
 - `customer_id`: 顧客ID（主キー）
 - `name`: 顧客名
 - `email`: メールアドレス
@@ -24,7 +26,7 @@ text-to-SQLの学習用に作成したEコマース店舗のサンプルデー�
 - `zip_code`: 郵便番号（7桁、ハイフンなし）
 - `registration_date`: 登録日
 
-### products（商品テーブル）
+#### products（商品テーブル）
 - `product_id`: 商品ID（主キー）
 - `name`: 商品名
 - `category`: カテゴリ（エレクトロニクス、ファッション、食品・飲料など）
@@ -43,7 +45,7 @@ text-to-SQLの学習用に作成したEコマース店舗のサンプルデー�
 - `shipping_address`: 配送先住所
 - `payment_method`: 支払い方法（credit_card, bank_transfer, convenience_store, paypal）
 
-### order_items（注文明細テーブル）
+#### order_items（注文明細テーブル）
 - `order_item_id`: 注文明細ID（主キー）
 - `order_id`: 注文ID（外部キー）
 - `product_id`: 商品ID（外部キー）
@@ -51,7 +53,7 @@ text-to-SQLの学習用に作成したEコマース店舗のサンプルデー�
 - `unit_price`: 単価
 - `subtotal`: 小計
 
-## ファイル構成
+### ファイル構成
 
 ```
 .
