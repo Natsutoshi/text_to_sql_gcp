@@ -1,0 +1,17 @@
+{
+  "user_prompt": {
+    "question": "月別のARPPUを出してください。",
+    "constraints": {
+      "limit": 5,
+      "order": "desc",
+      "avoid_select_star": true
+    },
+    "filters": {
+      "date_range": {
+        "from": "2025-01-01",
+        "to": "2025-12-31"
+      }
+    },
+    "notes": "BigQueryで実行可能なSQLのみ"
+  }
+}
