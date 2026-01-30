@@ -10,7 +10,7 @@ from google.cloud import bigquery
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-
+# SQLの禁止コマンド指定: 安全のためにSELECT以外の操作は禁止
 APP_NAME = "text-to-sql-api"
 DEFAULT_LIMIT = 100
 PROHIBITED_TOKENS = [
@@ -28,7 +28,7 @@ PROHIBITED_TOKENS = [
     "REVOKE",
 ]
 
-
+# スキーマテキストを読み込み
 def load_schema_text(schema_path: str) -> str:
     try:
         with open(schema_path, "r", encoding="utf-8") as f:
@@ -36,7 +36,7 @@ def load_schema_text(schema_path: str) -> str:
     except FileNotFoundError:
         return ""
 
-
+# コードフェンスを削除
 def strip_code_fence(text: str) -> str:
     text = text.strip()
     if text.startswith("```"):
@@ -44,14 +44,14 @@ def strip_code_fence(text: str) -> str:
         text = text.replace("```", "").strip()
     return text
 
-
+# 複数のSQLステートメントを生成した時に例外として禁止
 def ensure_single_statement(sql: str) -> str:
     parts = [p.strip() for p in sql.split(";") if p.strip()]
     if len(parts) > 1:
         raise ValueError("複数のSQLステートメントは許可されていません。")
     return parts[0] if parts else ""
 
-
+# SELECT文のみのSQLを生成するように強制: それ以外はフォールバック
 def ensure_select_only(sql: str) -> None:
     upper = sql.upper()
     if not upper.startswith("SELECT"):
@@ -60,20 +60,20 @@ def ensure_select_only(sql: str) -> None:
         if re.search(rf"\b{token}\b", upper):
             raise ValueError("SELECT以外の操作は許可されていません。")
 
-
+# LIMIT句を追加: デフォルトは100行: DEFAULT_LIMITで指定
 def ensure_limit(sql: str, limit: int) -> str:
     if re.search(r"\bLIMIT\b", sql, flags=re.IGNORECASE):
         return sql
     return f"{sql.rstrip()}\nLIMIT {limit}"
 
-
+# SQLの検証: コードフェンスを削除、複数のSQLステートメントを禁止、SELECT文のみを強制、LIMIT句を追加
 def validate_sql(sql: str) -> str:
     sql = strip_code_fence(sql)
     sql = ensure_single_statement(sql)
     ensure_select_only(sql)
     return sql
 
-
+# システムプロンプトの作成: スキーマ情報、ユーザーの要求、プロジェクトとデータセットの情報を含む
 def build_prompt(text: str, dataset: str, project_id: str, schema_text: str) -> str:
     schema_block = schema_text.strip() or "（スキーマ情報なし）"
     return (
@@ -92,7 +92,7 @@ def build_prompt(text: str, dataset: str, project_id: str, schema_text: str) -> 
         f"{text}\n"
     )
 
-
+# 生成リクエストのモデル: テキストまたはユーザープロンプトを受け取る: ユーザプロンプトをJSONで受け取るように設計
 class GenerateRequest(BaseModel):
     text: Optional[str] = Field(None, description="自然言語での問い合わせ")
     user_prompt: Optional[dict] = Field(None, description="ユーザープロンプト(JSON)")
