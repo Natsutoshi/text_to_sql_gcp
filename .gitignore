@@ -4,3 +4,6 @@
 __pycache__/
 *.pyc
 *.csv
+insert_customers.sql
+insert_orders.sql
+insert_order_items.sql
