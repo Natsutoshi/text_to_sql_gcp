@@ -252,6 +252,26 @@ export GEMINI_MODEL=gemini-1.5-flash
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
+### 3.1 Dockerでの実行
+
+```bash
+docker build -t text-to-sql-api .
+
+docker run --rm -p 8000:8000 \
+  -e GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID \
+  -e GEMINI_API_KEY=YOUR_GEMINI_API_KEY \
+  -e BQ_DATASET=ecommerce \
+  -e BQ_LOCATION=asia-northeast1 \
+  -e GEMINI_MODEL=gemini-1.5-flash \
+  text-to-sql-api
+```
+
+または `docker-compose.yml` を使う場合:
+
+```bash
+docker compose up --build
+```
+
 ### 4. 使い方
 
 #### SQL生成

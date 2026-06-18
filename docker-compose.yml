@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      GOOGLE_CLOUD_PROJECT: "${GOOGLE_CLOUD_PROJECT}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY}"
+      BQ_DATASET: "${BQ_DATASET:-ecommerce}"
+      BQ_LOCATION: "${BQ_LOCATION:-asia-northeast1}"
+      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-1.5-flash}"
+      SCHEMA_PATH: "${SCHEMA_PATH:-schema.sql}"
+      SQL_OUTPUT_PATH: "${SQL_OUTPUT_PATH:-generated.sql}"
+    volumes:
+      - .:/app:cached
